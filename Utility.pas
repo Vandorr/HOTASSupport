@@ -13,7 +13,7 @@ type
 
 var hotkeyList: array of THotkeys;
 
-procedure PostKeyExHWND(hWindow: HWnd; key: Word; const shift: TShiftState; specialkey: Boolean; justKeyDown: Boolean = false; justKeyUp: Boolean = false);
+procedure PostKeyExHWND(hWindow: HWnd; key: Word; const shift: TShiftState; specialkey: Boolean; justKeyDown: Boolean = false; justKeyUp: Boolean = false; delay: Integer = 0);
 function FindWindowByTitle(WindowTitle: string): Hwnd;
 procedure listWindowTitles(combo: TCombobox);
 function GetSpecialFolderPath(CSIDLFolder: Integer): string;
@@ -25,7 +25,7 @@ function FindHotKeyByName(name: String): Integer;
 
 implementation
 
-procedure PostKeyExHWND(hWindow: HWnd; key: Word; const shift: TShiftState; specialkey: Boolean; justKeyDown: Boolean = false; justKeyUp: Boolean = false);
+procedure PostKeyExHWND(hWindow: HWnd; key: Word; const shift: TShiftState; specialkey: Boolean; justKeyDown: Boolean = false; justKeyUp: Boolean = false; delay: Integer = 0);
 {************************************************************
  * Procedure PostKeyEx
  *
@@ -106,6 +106,8 @@ begin
       begin
         if justKeyDown or (not(justKeyUp) and not(justKeyDown)) then
           PostMessage(hWindow, WM_SYSKEYDOWN, key, lParam);
+        if delay>0 then
+          Sleep(delay);
         if justKeyUp or (not(justKeyUp) and not(justKeyDown)) then
           PostMessage(hWindow, WM_SYSKEYUP, key, lParam or $C0000000);
       end
@@ -113,6 +115,8 @@ begin
       begin
         if justKeyDown or (not(justKeyUp) and not(justKeyDown)) then
           PostMessage(hWindow, WM_KEYDOWN, key, lParam);
+        if delay>0 then
+          Sleep(delay);
         if justKeyUp or (not(justKeyUp) and not(justKeyDown)) then
           PostMessage(hWindow, WM_KEYUP, key, lParam or $C0000000);
       end;

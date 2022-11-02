@@ -1,7 +1,7 @@
 object Frm_Main: TFrm_Main
   Left = 0
   Top = 0
-  Caption = 'HOTAS Support | ver. 2.0.1'
+  Caption = 'HOTAS Support | ver. 2.0.2'
   ClientHeight = 540
   ClientWidth = 640
   Color = clBtnFace
@@ -599,7 +599,7 @@ object Frm_Main: TFrm_Main
     Style = csOwnerDrawFixed
     Anchors = [akLeft, akTop, akRight]
     ItemIndex = 0
-    TabOrder = 0
+    TabOrder = 3
     Text = '-- Hardware List --'
     OnChange = CB_HardwareChange
     Items.Strings = (
@@ -608,12 +608,12 @@ object Frm_Main: TFrm_Main
   object MemoStatus: TMemo
     Left = 8
     Top = 421
-    Width = 624
+    Width = 289
     Height = 72
     Anchors = [akLeft, akTop, akRight, akBottom]
     ReadOnly = True
     ScrollBars = ssVertical
-    TabOrder = 5
+    TabOrder = 7
   end
   object CB_GameWindows: TComboBox
     Left = 139
@@ -623,7 +623,7 @@ object Frm_Main: TFrm_Main
     Style = csOwnerDrawFixed
     Anchors = [akLeft, akTop, akRight]
     ItemIndex = 0
-    TabOrder = 1
+    TabOrder = 4
     Text = '-- Windows List --'
     OnChange = CB_GameWindowsChange
     OnEnter = CB_GameWindowsEnter
@@ -636,7 +636,7 @@ object Frm_Main: TFrm_Main
     Width = 624
     Height = 162
     Anchors = [akLeft, akTop, akRight]
-    Caption = ' Button - Hotkey bindings'
+    Caption = ' Button - Hotkey bindings '
     TabOrder = 6
     object Shape_Btn_11: TShape
       Left = 14
@@ -1328,13 +1328,13 @@ object Frm_Main: TFrm_Main
     end
   end
   object B_Profile_Save: TButton
-    Left = 414
+    Left = 412
     Top = 3
     Width = 43
     Height = 17
     Anchors = [akTop, akRight]
     Caption = 'Save'
-    TabOrder = 2
+    TabOrder = 0
     OnClick = B_Profile_SaveClick
   end
   object B_Profile_Rename: TButton
@@ -1344,7 +1344,7 @@ object Frm_Main: TFrm_Main
     Height = 17
     Anchors = [akTop, akRight]
     Caption = 'Rename'
-    TabOrder = 3
+    TabOrder = 1
     OnClick = B_Profile_RenameClick
   end
   object B_Profile_Delete: TButton
@@ -1354,7 +1354,7 @@ object Frm_Main: TFrm_Main
     Height = 17
     Anchors = [akTop, akRight]
     Caption = 'Delete'
-    TabOrder = 4
+    TabOrder = 2
     OnClick = B_Profile_DeleteClick
   end
   object GroupBox1: TGroupBox
@@ -1362,8 +1362,8 @@ object Frm_Main: TFrm_Main
     Top = 81
     Width = 624
     Height = 168
-    Caption = 'Setup Axis'
-    TabOrder = 7
+    Caption = ' Setup Axis '
+    TabOrder = 5
     object cxGrid: TcxGrid
       Left = 2
       Top = 15
@@ -1388,6 +1388,7 @@ object Frm_Main: TFrm_Main
         DataController.Summary.SummaryGroups = <>
         DataController.OnAfterInsert = GT_ViewDataControllerAfterInsert
         DataController.OnAfterPost = GT_ViewDataControllerAfterPost
+        DataController.OnBeforePost = GT_ViewDataControllerBeforePost
         OptionsSelection.HideSelection = True
         OptionsSelection.InvertSelect = False
         OptionsView.ColumnAutoWidth = True
@@ -1448,6 +1449,67 @@ object Frm_Main: TFrm_Main
       end
     end
   end
+  object GB_Parameters: TGroupBox
+    Left = 303
+    Top = 421
+    Width = 329
+    Height = 72
+    Caption = ' Parameters '
+    TabOrder = 8
+    object Label4: TLabel
+      Left = 8
+      Top = 19
+      Width = 99
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'Length of key press:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = L_Btn_Click
+    end
+    object Label7: TLabel
+      Left = 144
+      Top = 19
+      Width = 16
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'ms '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      OnClick = L_Btn_Click
+    end
+    object Label8: TLabel
+      Left = 160
+      Top = 21
+      Width = 94
+      Height = 11
+      Caption = '(0 = just hitting a key)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -9
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object E_Param_KeyPressLength: TEdit
+      Left = 109
+      Top = 15
+      Width = 32
+      Height = 21
+      Alignment = taRightJustify
+      NumbersOnly = True
+      TabOrder = 0
+      Text = '0'
+    end
+  end
   object XPManifest: TXPManifest
     Left = 8
     Top = 47
@@ -1462,7 +1524,7 @@ object Frm_Main: TFrm_Main
     Interval = 25
     OnTimer = TimerAxisTimer
     Left = 8
-    Top = 96
+    Top = 116
   end
   object MainMenu: TMainMenu
     Left = 8

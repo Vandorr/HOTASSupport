@@ -129,6 +129,11 @@ type
     Col_HotkeyP: TcxGridColumn;
     Col_HotkeyN: TcxGridColumn;
     Col_StepsCount: TcxGridColumn;
+    GB_Parameters: TGroupBox;
+    Label4: TLabel;
+    E_Param_KeyPressLength: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure CB_HardwareChange(Sender: TObject);
     procedure TimerAxisTimer(Sender: TObject);
@@ -166,6 +171,8 @@ type
     procedure GT_ViewCustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure GT_ViewDataControllerBeforePost(
+      ADataController: TcxCustomDataController);
   private
     { Private declarations }
     lastPosition: array[0..7] of integer;
@@ -295,6 +302,16 @@ begin
   FillWatchList;
 end;
 
+procedure TFrm_Main.GT_ViewDataControllerBeforePost(
+  ADataController: TcxCustomDataController);
+begin
+if(ADataController.Values[ADataController.FocusedRecordIndex,2]='') or (ADataController.Values[ADataController.FocusedRecordIndex,4]='')then
+begin
+  MessageDlg('Fill Hotkey field(s) before post!',mtWarning,[mbOk],0);
+  Abort;
+end
+end;
+
 procedure TFrm_Main.B_AxisCalibrationClick(Sender: TObject);
 //var position: integer;
 begin
@@ -421,6 +438,8 @@ begin
     ChangeHotkeyLabel(Frm_Main.FindComponent('L_Btn_'+inttostr(i)) as TLabel);
   end;
 
+  E_Param_KeyPressLength.Text := Ini.ReadString( 'Parameter', 'KeyPressLength', '0');
+
   TimerAxis.Enabled := true;
 end;
 
@@ -513,6 +532,9 @@ begin
       Ini.WriteString( 'Hotkey', inttostr(i)+'_Label', (Frm_Main.FindComponent('L_Btn_'+inttostr(i)) as TLabel).Caption);
       Ini.WriteString( 'Hotkey', inttostr(i)+'_Key', (Frm_Main.FindComponent('E_Hotkey_Btn_'+inttostr(i)) as TEdit).Text);
     end;
+
+    Ini.WriteString( 'Parameter', 'KeyPressLength', E_Param_KeyPressLength.Text);
+
     Ini.Free;
 
     TimerAxis.Enabled := true;
@@ -573,7 +595,7 @@ begin
               begin
                 for k := 0 to (key_count-key_count_prev)-1 do
                 begin
-                  PostKeyExHWND(GameHWND,Ord(watchList[i][j].max_hotkey),[],true,false,false);
+                  PostKeyExHWND(GameHWND,Ord(watchList[i][j].max_hotkey),[],true,false,false,StrToIntDef(E_Param_KeyPressLength.Text,0));
                 end;
                 MemoStatus.Lines.Add(watchList[i][j].max_hotkey+' (Hotkey-) *' + inttostr(key_count-key_count_prev));
               end
@@ -581,7 +603,7 @@ begin
               begin
                 for k := 0 to (key_count_prev-key_count)-1 do
                 begin
-                  PostKeyExHWND(GameHWND,Ord(watchList[i][j].min_hotkey),[],true,false,false);
+                  PostKeyExHWND(GameHWND,Ord(watchList[i][j].min_hotkey),[],true,false,false,StrToIntDef(E_Param_KeyPressLength.Text,0));
                 end;
                 MemoStatus.Lines.Add(watchList[i][j].min_hotkey+' (Hotkey+) *' + inttostr(key_count_prev-key_count));
               end;
@@ -672,7 +694,7 @@ begin
               HotKey := Ord(Edit.Text[1]);
           end;
           if HotKey<>0 then
-            PostKeyExHWND(GameHWND, HotKey, [], false, true, false);
+            PostKeyExHWND(GameHWND, HotKey, [], false, true, false,StrToIntDef(E_Param_KeyPressLength.Text,0));
         end;
       end
       else
@@ -688,7 +710,7 @@ begin
               HotKey := Ord(Edit.Text[1]);
           end;
           if HotKey<>0 then
-            PostKeyExHWND(GameHWND, HotKey, [], false, false, true);
+            PostKeyExHWND(GameHWND, HotKey, [], false, false, true,StrToIntDef(E_Param_KeyPressLength.Text,0));
         end;
       end;
     end;

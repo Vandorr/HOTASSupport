@@ -208,11 +208,11 @@ object Frm_About: TFrm_About
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 268
+    Left = 235
     Top = 62
-    Width = 28
+    Width = 61
     Height = 16
-    Caption = '2021'
+    Caption = '2021-2022'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
